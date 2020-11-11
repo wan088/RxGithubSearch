@@ -12,11 +12,11 @@ struct SearchRepogitoriesResults: Decodable {
     let incomplete_results: Bool
     let itmes: [Repogitory]
 }
-struct Repogitory: Decodable {
+struct Repogitory: Decodable { 
     let id: Int
     let node_id: String
     let name: String
     let full_name: String
     // TODO : other properties
-}
+}
 
