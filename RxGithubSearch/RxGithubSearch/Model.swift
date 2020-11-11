@@ -7,11 +7,16 @@
 
 import Foundation
 
-struct searchRepogitoriesResults {
-    let acccept: String
-    let q: String
-    let sort: String
-    let order: String
-    let per_page: Int
-    let page: Int
+struct SearchRepogitoriesResults: Decodable {
+    let total_count: Int
+    let incomplete_results: Bool
+    let itmes: [Repogitory]
 }
+struct Repogitory: Decodable {
+    let id: Int
+    let node_id: String
+    let name: String
+    let full_name: String
+    // TODO : other properties
+}
+
