@@ -10,11 +10,11 @@
 		120A53CD255BE93A007C113F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A53CC255BE93A007C113F /* AppDelegate.swift */; };
 		120A53CF255BE93A007C113F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A53CE255BE93A007C113F /* SceneDelegate.swift */; };
 		120A53D1255BE93A007C113F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A53D0255BE93A007C113F /* ViewController.swift */; };
-		120A53D4255BE93A007C113F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 120A53D2255BE93A007C113F /* Main.storyboard */; };
 		120A53D6255BE93B007C113F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 120A53D5255BE93B007C113F /* Assets.xcassets */; };
 		120A53D9255BE93B007C113F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 120A53D7255BE93B007C113F /* LaunchScreen.storyboard */; };
 		120A53E4255BE93B007C113F /* RxGithubSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A53E3255BE93B007C113F /* RxGithubSearchTests.swift */; };
 		120A53EF255BE93B007C113F /* RxGithubSearchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A53EE255BE93B007C113F /* RxGithubSearchUITests.swift */; };
+		120A541B255BF486007C113F /* GithubSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A541A255BF486007C113F /* GithubSearchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +39,6 @@
 		120A53CC255BE93A007C113F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		120A53CE255BE93A007C113F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		120A53D0255BE93A007C113F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		120A53D3255BE93A007C113F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		120A53D5255BE93B007C113F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		120A53D8255BE93B007C113F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		120A53DA255BE93B007C113F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +48,7 @@
 		120A53EA255BE93B007C113F /* RxGithubSearchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxGithubSearchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		120A53EE255BE93B007C113F /* RxGithubSearchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxGithubSearchUITests.swift; sourceTree = "<group>"; };
 		120A53F0255BE93B007C113F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		120A541A255BF486007C113F /* GithubSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubSearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +101,8 @@
 			children = (
 				120A53CC255BE93A007C113F /* AppDelegate.swift */,
 				120A53CE255BE93A007C113F /* SceneDelegate.swift */,
+				120A541A255BF486007C113F /* GithubSearchViewController.swift */,
 				120A53D0255BE93A007C113F /* ViewController.swift */,
-				120A53D2255BE93A007C113F /* Main.storyboard */,
 				120A53D5255BE93B007C113F /* Assets.xcassets */,
 				120A53D7255BE93B007C113F /* LaunchScreen.storyboard */,
 				120A53DA255BE93B007C113F /* Info.plist */,
@@ -233,7 +233,6 @@
 			files = (
 				120A53D9255BE93B007C113F /* LaunchScreen.storyboard in Resources */,
 				120A53D6255BE93B007C113F /* Assets.xcassets in Resources */,
-				120A53D4255BE93A007C113F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +259,7 @@
 			files = (
 				120A53D1255BE93A007C113F /* ViewController.swift in Sources */,
 				120A53CD255BE93A007C113F /* AppDelegate.swift in Sources */,
+				120A541B255BF486007C113F /* GithubSearchViewController.swift in Sources */,
 				120A53CF255BE93A007C113F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -296,14 +296,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		120A53D2255BE93A007C113F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				120A53D3255BE93A007C113F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		120A53D7255BE93B007C113F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
