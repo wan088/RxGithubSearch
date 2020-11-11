@@ -15,6 +15,8 @@
 		120A53E4255BE93B007C113F /* RxGithubSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A53E3255BE93B007C113F /* RxGithubSearchTests.swift */; };
 		120A53EF255BE93B007C113F /* RxGithubSearchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A53EE255BE93B007C113F /* RxGithubSearchUITests.swift */; };
 		120A541B255BF486007C113F /* GithubSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A541A255BF486007C113F /* GithubSearchViewController.swift */; };
+		120A5420255BF657007C113F /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A541F255BF657007C113F /* APITests.swift */; };
+		120A5429255BF81C007C113F /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A5428255BF81C007C113F /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		120A53EE255BE93B007C113F /* RxGithubSearchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxGithubSearchUITests.swift; sourceTree = "<group>"; };
 		120A53F0255BE93B007C113F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		120A541A255BF486007C113F /* GithubSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubSearchViewController.swift; sourceTree = "<group>"; };
+		120A541F255BF657007C113F /* APITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITests.swift; sourceTree = "<group>"; };
+		120A5428255BF81C007C113F /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,7 @@
 				120A53D5255BE93B007C113F /* Assets.xcassets */,
 				120A53D7255BE93B007C113F /* LaunchScreen.storyboard */,
 				120A53DA255BE93B007C113F /* Info.plist */,
+				120A5428255BF81C007C113F /* Model.swift */,
 			);
 			path = RxGithubSearch;
 			sourceTree = "<group>";
@@ -115,6 +120,7 @@
 			children = (
 				120A53E3255BE93B007C113F /* RxGithubSearchTests.swift */,
 				120A53E5255BE93B007C113F /* Info.plist */,
+				120A541F255BF657007C113F /* APITests.swift */,
 			);
 			path = RxGithubSearchTests;
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				120A5429255BF81C007C113F /* Model.swift in Sources */,
 				120A53D1255BE93A007C113F /* ViewController.swift in Sources */,
 				120A53CD255BE93A007C113F /* AppDelegate.swift in Sources */,
 				120A541B255BF486007C113F /* GithubSearchViewController.swift in Sources */,
@@ -268,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				120A5420255BF657007C113F /* APITests.swift in Sources */,
 				120A53E4255BE93B007C113F /* RxGithubSearchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
