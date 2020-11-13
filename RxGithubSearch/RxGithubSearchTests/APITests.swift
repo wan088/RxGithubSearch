@@ -17,13 +17,37 @@ final class APITests: XCTestCase {
     func testSearchRepogitories_whenSuccess () {
         //given
         
-        let stubbed: [Repogitory] = []
+        let stubbedResults: [String : Any]?
         //when - getSerachRepogitories API 호출
         
         let result: SearchRepogitoriesResults? = nil
+        
         //then
         XCTAssertNotNil(result)
-        XCTAssertEqual(result!.items, stubbed)
+        XCTAssertEqual(result!.total_count, 5)
+    }
+    
+    func testSearchRepogitories_whenNetworkFail_getNil () {
+        //given
         
+        let stubbedResults: [String : Any]?
+        //when - getSerachRepogitories API 호출
+        
+        let result: SearchRepogitoriesResults? = nil
+        
+        //then
+        XCTAssertNil(result)
+    }
+    
+    func testSearchRepogitories_whenWrongDataFail_getNil () {
+        //given
+        
+        let stubbedResults: [String : Any]?
+        //when - getSerachRepogitories API 호출
+        
+        let result: SearchRepogitoriesResults? = nil
+        
+        //then
+        XCTAssertNil(result)
     }
 }
