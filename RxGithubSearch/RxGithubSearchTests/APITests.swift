@@ -7,6 +7,7 @@
 
 import Foundation
 import XCTest
+
 @testable import RxGithubSearch
 
 final class APITests: XCTestCase {
@@ -14,40 +15,71 @@ final class APITests: XCTestCase {
         super.setUp()
     }
     
-    func testSearchRepogitories_whenSuccess () {
+    func testSearchRepogitories_whenSuccess_get () {
         //given
         
-        let stubbedResults: [String : Any]?
+        let urlSessionSpy = URLSessionSpy()
+        urlSessionSpy.stubbedSearchRepositoriesResultsString = """
+            {
+              "total_count": 3,
+              "incomplete_results": false,
+              "items": [
+                    {
+                      "id": 26262860,
+                      "node_id": "MDEwOlJlcG9zaXRvcnkyNjI2Mjg2MA==",
+                      "name": "wangEditor",
+                      "full_name": "wangeditor-team/wangEditor"
+                    },
+                    {
+                      "id": 26262860,
+                      "node_id": "MDEwOlJlcG9zaXRvcnkyNjI2Mjg2MA==",
+                      "name": "wangEditor",
+                      "full_name": "wangeditor-team/wangEditor"
+                    },
+                    {
+                      "id": 26262860,
+                      "node_id": "MDEwOlJlcG9zaXRvcnkyNjI2Mjg2MA==",
+                      "name": "wangEditor",
+                      "full_name": "wangeditor-team/wangEditor"
+                    }
+                ]
+            }
+        """
+        
+        let api = API(urlSession: urlSessionSpy)
+        var myResult: SearchRepogitoriesResults?
         //when - getSerachRepogitories API 호출
         
-        let result: SearchRepogitoriesResults? = nil
+        api.getRepogitoriesResults(keyword: "wan", sort: .stars, order: .asc) { result in
+            myResult = result
+        }
         
         //then
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result!.total_count, 5)
+        XCTAssertNotNil(myResult)
+        XCTAssertEqual(myResult!.total_count, 3)
     }
     
-    func testSearchRepogitories_whenNetworkFail_getNil () {
-        //given
-        
-        let stubbedResults: [String : Any]?
-        //when - getSerachRepogitories API 호출
-        
-        let result: SearchRepogitoriesResults? = nil
-        
-        //then
-        XCTAssertNil(result)
-    }
-    
-    func testSearchRepogitories_whenWrongDataFail_getNil () {
-        //given
-        
-        let stubbedResults: [String : Any]?
-        //when - getSerachRepogitories API 호출
-        
-        let result: SearchRepogitoriesResults? = nil
-        
-        //then
-        XCTAssertNil(result)
-    }
+//    func testSearchRepogitories_whenNetworkFail_getNil () {
+//        //given
+//
+//        let stubbedResults: [String : Any]?
+//        //when - getSerachRepogitories API 호출
+//
+//        let result: SearchRepogitoriesResults? = nil
+//
+//        //then
+//        XCTAssertNil(result)
+//    }
+//
+//    func testSearchRepogitories_whenWrongDataFail_getNil () {
+//        //given
+//
+//        let stubbedResults: [String : Any]?
+//        //when - getSerachRepogitories API 호출
+//
+//        let result: SearchRepogitoriesResults? = nil
+//
+//        //then
+//        XCTAssertNil(result)
+//    }
 }

@@ -20,6 +20,14 @@ enum Order {
 }
 
 class API {
+    
+    private let baseUrl = "https://api.github.com/"
+    private let urlSession: URLSessionProtocol
+    
+    init(urlSession: URLSessionProtocol) {
+        self.urlSession = urlSession
+    }
+
     func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?)->Void) {
         
         let urlString = baseUrl + "search/repositories?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
@@ -32,5 +40,12 @@ class API {
         }.resume()
     }
     
+}
+
+extension URLSession: URLSessionProtocol {
     
+}
+
+protocol URLSessionProtocol {
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
 }
