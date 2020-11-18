@@ -20,8 +20,17 @@ enum Order {
 }
 
 class API {
-    func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?) {
+    func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?)->Void) {
         
+        let urlString = baseUrl + "search/repositories?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
+        guard let url = URL(string: urlString) else { return}
+        urlSession.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+            if let data = data {
+                let result = try! JSONDecoder().decode(SearchRepogitoriesResults.self, from: data)
+                completion(result)
+            }
+        }.resume()
     }
+    
     
 }
