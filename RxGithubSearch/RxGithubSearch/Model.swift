@@ -10,9 +10,9 @@ import Foundation
 struct SearchRepogitoriesResults: Decodable {
     let total_count: Int
     let incomplete_results: Bool
-    let itmes: [Repogitory]
+    let items: [Repogitory]
 }
-struct Repogitory: Decodable { 
+struct Repogitory: Decodable, Equatable {  
     let id: Int
     let node_id: String
     let name: String
