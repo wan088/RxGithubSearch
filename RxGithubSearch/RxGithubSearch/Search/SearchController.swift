@@ -7,9 +7,19 @@
 
 import UIKit
 
+enum SearchType: Int {
+    case repo
+    case user
+    
+    func next() -> SearchType {
+        let nextIdx = self.rawValue + 1
+        return Self(rawValue: nextIdx) ?? Self(rawValue: 0)!
+    }
+}
 class SearchController: UIViewController {
     var tableView: UITableView!
     var repos = [Repogitory]()
+    var currentSearchType: SearchType = .repo
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +31,8 @@ class SearchController: UIViewController {
     }
     func configureNavigationBar() {
         self.navigationItem.hidesSearchBarWhenScrolling = false
+        let toggleSearchTypeBtn = UIBarButtonItem(barButtonSystemItem: .organize, target:  self, action: #selector(toggleSearchType(_:)))
+        self.navigationItem.rightBarButtonItem = toggleSearchTypeBtn
     }
     func configureSearchBar() {
         let searchController = UISearchController()
@@ -34,7 +46,7 @@ class SearchController: UIViewController {
     }
     func configureUI() {
         self.view.backgroundColor = .white
-        self.title = "GitSearch"
+        self.title = "\(self.currentSearchType) _ Search"
     }
     func addSubViews() {
         self.view.addSubview(self.tableView)
@@ -43,6 +55,12 @@ class SearchController: UIViewController {
         self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+    }
+    
+    @objc
+    func toggleSearchType(_ sender: Any) {
+        self.currentSearchType = self.currentSearchType.next()
+        self.title = "\(self.currentSearchType) _ Search"
     }
 }
 extension SearchController: UITableViewDelegate, UITableViewDataSource {
