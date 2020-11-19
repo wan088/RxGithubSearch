@@ -24,6 +24,7 @@ class GithubSearchViewController: UIViewController {
     }
     func configureSearchBar() {
         let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
         self.navigationItem.searchController = searchController
     }
     func configureTableView() {
@@ -46,13 +47,22 @@ class GithubSearchViewController: UIViewController {
 }
 extension GithubSearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-//        return repos.count
+        return repos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "a"
+        cell.textLabel?.text = self.repos[indexPath.row].name
         return cell
+    }
+}
+extension GithubSearchViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        API(urlSession: URLSession.shared).getRepogitoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
+            DispatchQueue.main.async {
+                self.repos = result?.items ?? []
+                self.tableView.reloadData()
+            }
+        }
     }
 }
