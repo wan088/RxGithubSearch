@@ -11,11 +11,14 @@ import Foundation
 
 class URLSessionSpy: URLSessionProtocol {
     var stubbedSearchRepositoriesResultsString: String!
-    
     var stubbedError: Error!
     func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        let data = stubbedSearchRepositoriesResultsString.data(using: .utf8)
-        completionHandler(data, nil, nil)
+        if let error = stubbedError {
+            completionHandler(nil, nil, error)
+        }else{
+            let data = stubbedSearchRepositoriesResultsString.data(using: .utf8)
+            completionHandler(data, nil, nil)
+        }
         return URLSessionDataTaskDummy()
     }
 }

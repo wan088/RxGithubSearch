@@ -33,8 +33,10 @@ class API {
         let urlString = baseUrl + "search/repositories?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
         guard let url = URL(string: urlString) else { return}
         urlSession.dataTask(with: URLRequest(url: url)) { (data, response, error) in
-            if let data = data {
-                let result = try! JSONDecoder().decode(SearchRepogitoriesResults.self, from: data)
+            if let error = error {
+                completion(nil)
+            }else if let data = data {
+                let result = try? JSONDecoder().decode(SearchRepogitoriesResults.self, from: data)
                 completion(result)
             }
         }.resume()
