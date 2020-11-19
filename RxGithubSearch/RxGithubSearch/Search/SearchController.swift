@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GithubSearchViewController: UIViewController {
+class SearchController: UIViewController {
     var tableView: UITableView!
     var repos = [Repogitory]()
     
@@ -45,7 +45,7 @@ class GithubSearchViewController: UIViewController {
         self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
     }
 }
-extension GithubSearchViewController: UITableViewDelegate, UITableViewDataSource {
+extension SearchController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return repos.count
     }
@@ -56,7 +56,7 @@ extension GithubSearchViewController: UITableViewDelegate, UITableViewDataSource
         return cell
     }
 }
-extension GithubSearchViewController: UISearchResultsUpdating {
+extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         API(urlSession: URLSession.shared).getRepogitoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
             DispatchQueue.main.async {

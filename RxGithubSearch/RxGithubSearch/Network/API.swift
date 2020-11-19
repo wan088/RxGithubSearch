@@ -41,7 +41,6 @@ class API {
             }
         }.resume()
     }
-    
 }
 
 extension URLSession: URLSessionProtocol {
