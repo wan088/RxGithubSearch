@@ -101,4 +101,20 @@ final class APITests: XCTestCase {
         //then
         XCTAssertNil(myResult)
     }
+    
+    func testSearchRepogitories_whenWrongDataFail_getNil () {
+        //given
+        let urlSessionSpy = URLSessionSpy()
+        urlSessionSpy.stubbedSearchRepositoriesResultsString = "asdasd"
+        let api = API(urlSession: urlSessionSpy)
+        var myResult: SearchRepogitoriesResults! = SearchRepogitoriesResults(total_count: 3, incomplete_results: true, items: [])
+        
+        //when - getSerachRepogitories API 호출
+        api.getRepogitoriesResults(keyword: "asda", sort: .stars, order: .asc) { (result) in
+            myResult = result
+        }
+        
+        //then
+        XCTAssertNil(myResult)
+    }
 }
