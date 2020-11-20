@@ -36,6 +36,28 @@ class SearchControllerTest: XCTestCase {
         XCTAssertEqual(controller.tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.textLabel?.text, "dfg")
     }
     
+    func testSearchResult_whenToggled() {
+        // given
+        let controller = SearchController()
+        let api = APISpy()
+        let searchType = controller.currentSearchType
+        api.currentSearchType = searchType
+        controller.api = APISpy()
+        controller.view.layoutIfNeeded()
+        
+        
+        //when + then
+        controller.navigationItem.searchController?.searchBar.text = "asd"
+        XCTAssertTrue(controller.title!.contains("\(searchType)"))
+        
+        controller.toggleSearchType(3)
+        
+        controller.navigationItem.searchController?.searchBar.text = "asd"
+        XCTAssertTrue(controller.title!.contains("\(searchType)"))
+        
+    }
+    
+    
     func testSearchToggleBtn_whenTapped() {
         // given
         let controller = SearchController()
