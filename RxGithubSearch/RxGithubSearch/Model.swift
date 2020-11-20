@@ -7,6 +7,16 @@
 
 import Foundation
 
+enum SearchType: Int {
+    case repo
+    case user
+    
+    var next: SearchType {
+        Self(rawValue: self.rawValue + 1) ?? Self(rawValue: 0)!
+    }
+    
+}
+
 struct SearchRepogitoriesResults: Decodable {
     let total_count: Int
     let incomplete_results: Bool

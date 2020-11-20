@@ -66,9 +66,9 @@ class SearchControllerTest: XCTestCase {
         
         // when + then
         controller.toggleSearchType(3)
-        XCTAssertEqual(controller.title, "\(searchType.next()) _ Search")
+        XCTAssertEqual(controller.title, "\(searchType.next) _ Search")
         controller.toggleSearchType(3)
-        XCTAssertEqual(controller.title, "\(searchType.next().next()) _ Search")
+        XCTAssertEqual(controller.title, "\(searchType.next.next) _ Search")
     }
     
     

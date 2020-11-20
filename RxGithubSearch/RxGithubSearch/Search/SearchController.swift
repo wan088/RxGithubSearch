@@ -7,15 +7,6 @@
 
 import UIKit
 
-enum SearchType: Int {
-    case repo
-    case user
-    
-    func next() -> SearchType {
-        let nextIdx = self.rawValue + 1
-        return Self(rawValue: nextIdx) ?? Self(rawValue: 0)!
-    }
-}
 class SearchController: UIViewController {
     var tableView: UITableView!
     var repos = [Repogitory]()
@@ -61,7 +52,7 @@ class SearchController: UIViewController {
     
     @objc
     func toggleSearchType(_ sender: Any) {
-        self.currentSearchType = self.currentSearchType.next()
+        self.currentSearchType = self.currentSearchType.next
         self.title = "\(self.currentSearchType) _ Search"
     }
 }

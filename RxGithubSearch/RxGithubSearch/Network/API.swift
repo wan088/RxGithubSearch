@@ -55,6 +55,10 @@ class API: APIProtocol {
         
     }
     
+    func getSearchResults() {
+        
+    }
+    
 }
 
 extension URLSession: URLSessionProtocol {
