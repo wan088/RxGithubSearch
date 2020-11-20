@@ -11,6 +11,7 @@ import Foundation
 
 class URLSessionSpy: URLSessionProtocol {
     var stubbedSearchRepositoriesResultsString: String!
+    var stubbedSearchUsersResultsString: String!
     var stubbedError: Error!
     func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         if let error = stubbedError {

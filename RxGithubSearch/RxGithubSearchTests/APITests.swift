@@ -117,4 +117,48 @@ final class APITests: XCTestCase {
         //then
         XCTAssertNil(myResult)
     }
+    
+    func testSearchUsers_whenSuccess_get () {
+        //given
+        
+        let urlSessionSpy = URLSessionSpy()
+        urlSessionSpy.stubbedSearchUsersResultsString = """
+            {
+              "total_count": 3,
+              "incomplete_results": false,
+              "items": [
+                    {
+                      "id": 26262860,
+                      "node_id": "MDEwOlJlcG9zaXRvcnkyNjI2Mjg2MA==",
+                      "name": "wangEditor",
+                      "full_name": "wangeditor-team/wangEditor"
+                    },
+                    {
+                      "id": 26262860,
+                      "node_id": "MDEwOlJlcG9zaXRvcnkyNjI2Mjg2MA==",
+                      "name": "wangEditor",
+                      "full_name": "wangeditor-team/wangEditor"
+                    },
+                    {
+                      "id": 26262860,
+                      "node_id": "MDEwOlJlcG9zaXRvcnkyNjI2Mjg2MA==",
+                      "name": "wangEditor",
+                      "full_name": "wangeditor-team/wangEditor"
+                    }
+                ]
+            }
+        """
+        
+        let api = API(urlSession: urlSessionSpy)
+        var myResult: SearchUsersResults?
+        
+        //when - getSerachRepogitories API 호출
+        api.getUsersResults(keyword: "wan", sort: .stars, order: .asc) { result in
+            myResult = result
+        }
+        
+        //then
+        XCTAssertNotNil(myResult)
+        XCTAssertEqual(myResult!.total_count, 3)
+    }
 }
