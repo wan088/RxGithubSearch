@@ -12,8 +12,10 @@ import Foundation
 class APISpy: APIProtocol {
     var stubbedSearchRepogitoriesResults: SearchRepogitoriesResults!
     var stubbedError: ErrorDummy!
+    var currentSearchType: SearchType!
     
     func getRepogitoriesResults(keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?) -> Void) {
+        self.currentSearchType = SearchType.repo
         if stubbedError != nil {
             completion(nil)
         }else{
