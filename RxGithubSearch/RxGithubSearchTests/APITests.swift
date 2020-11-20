@@ -19,7 +19,7 @@ final class APITests: XCTestCase {
         //given
         
         let urlSessionSpy = URLSessionSpy()
-        urlSessionSpy.stubbedSearchRepositoriesResultsString = """
+        urlSessionSpy.stubbedResultsString = """
             {
               "total_count": 3,
               "incomplete_results": false,
@@ -62,7 +62,7 @@ final class APITests: XCTestCase {
     func testSearchRepogitories_whenNetworkFail_getNil () {
         //given
         let urlSessionSpy = URLSessionSpy()
-        urlSessionSpy.stubbedSearchRepositoriesResultsString = """
+        urlSessionSpy.stubbedResultsString = """
             {
               "total_count": 3,
               "incomplete_results": false,
@@ -105,7 +105,7 @@ final class APITests: XCTestCase {
     func testSearchRepogitories_whenWrongDataFail_getNil () {
         //given
         let urlSessionSpy = URLSessionSpy()
-        urlSessionSpy.stubbedSearchRepositoriesResultsString = "asdasd"
+        urlSessionSpy.stubbedResultsString = "asdasd"
         let api = API(urlSession: urlSessionSpy)
         var myResult: SearchRepogitoriesResults! = SearchRepogitoriesResults(total_count: 3, incomplete_results: true, items: [])
         
@@ -122,7 +122,7 @@ final class APITests: XCTestCase {
         //given
         
         let urlSessionSpy = URLSessionSpy()
-        urlSessionSpy.stubbedSearchUsersResultsString = """
+        urlSessionSpy.stubbedResultsString = """
             {
               "total_count": 12,
               "incomplete_results": false,
@@ -157,6 +157,6 @@ final class APITests: XCTestCase {
         
         //then
         XCTAssertNotNil(myResult)
-        XCTAssertEqual(myResult!.total_count, 3)
+        XCTAssertEqual(myResult!.total_count, 12)
     }
 }
