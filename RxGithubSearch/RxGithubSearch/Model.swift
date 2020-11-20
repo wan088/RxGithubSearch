@@ -20,3 +20,15 @@ struct Repogitory: Decodable, Equatable {
     // TODO : other properties
 }
 
+
+struct SearchUsersResults: Decodable {
+    let total_count: Int
+    let incomplete_results: Bool
+    let items: [User]
+}
+
+struct User: Decodable {
+    let login: String
+    let id: Int
+    let node_id: String
+}
