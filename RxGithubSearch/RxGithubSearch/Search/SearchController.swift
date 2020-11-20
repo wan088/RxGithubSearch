@@ -67,7 +67,12 @@ class SearchController: UIViewController {
 }
 extension SearchController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repos.count
+        switch self.currentSearchType {
+        case .repo :
+            return repos.count
+        case .user :
+            return users.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
