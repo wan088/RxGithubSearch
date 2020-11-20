@@ -19,6 +19,7 @@ enum SearchType: Int {
 class SearchController: UIViewController {
     var tableView: UITableView!
     var repos = [Repogitory]()
+    var users = [User]()
     var currentSearchType: SearchType = .repo
     var api: APIProtocol!
     
@@ -71,16 +72,31 @@ extension SearchController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = self.repos[indexPath.row].name
+        switch self.currentSearchType {
+        case .repo:
+            cell.textLabel?.text = self.repos[indexPath.row].name
+        case .user:
+            cell.textLabel?.text = self.users[indexPath.row].login
+        }
         return cell
     }
 }
 extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        self.api.getRepogitoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
-            DispatchQueue.main.async {
-                self.repos = result?.items ?? []
-                self.tableView.reloadData()
+        switch self.currentSearchType {
+        case .repo:
+            self.api.getRepogitoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
+                DispatchQueue.main.async {
+                    self.repos = result?.items ?? []
+                    self.tableView.reloadData()
+                }
+            }
+        case .user:
+            self.api.getUsersResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
+                DispatchQueue.main.async {
+                    self.users = result?.items ?? []
+                    self.tableView.reloadData()
+                }
             }
         }
     }

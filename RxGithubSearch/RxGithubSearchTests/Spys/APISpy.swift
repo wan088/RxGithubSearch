@@ -11,6 +11,7 @@ import Foundation
 
 class APISpy: APIProtocol {
     var stubbedSearchRepogitoriesResults: SearchRepogitoriesResults!
+    var stubbedSearchUsersResults: SearchUsersResults!
     var stubbedError: ErrorDummy!
     var currentSearchType: SearchType!
     
@@ -20,6 +21,15 @@ class APISpy: APIProtocol {
             completion(nil)
         }else{
             completion(stubbedSearchRepogitoriesResults)
+        }
+    }
+    
+    func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void) {
+        self.currentSearchType = SearchType.user
+        if stubbedError != nil {
+            completion(nil)
+        }else{
+            completion(stubbedSearchUsersResults)
         }
     }
     
