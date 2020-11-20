@@ -94,7 +94,7 @@ final class APITests: XCTestCase {
         
         //when - getSerachRepogitories API 호출
         
-        let result = api.getRepogitoriesResults(keyword: "wan", sort: .stars, order: .asc) { (result) in
+        api.getRepogitoriesResults(keyword: "wan", sort: .stars, order: .asc) { (result) in
             myResult = result
         }
         
