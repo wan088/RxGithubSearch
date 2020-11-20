@@ -42,18 +42,18 @@ class SearchControllerTest: XCTestCase {
         let api = APISpy()
         let searchType = controller.currentSearchType
         api.currentSearchType = searchType
-        controller.api = APISpy()
+        controller.api = api
         controller.view.layoutIfNeeded()
         
         
         //when + then
         controller.navigationItem.searchController?.searchBar.text = "asd"
-        XCTAssertTrue(controller.title!.contains("\(searchType)"))
+        XCTAssertTrue(controller.title!.contains("\(api.currentSearchType!)"))
         
         controller.toggleSearchType(3)
         
         controller.navigationItem.searchController?.searchBar.text = "asd"
-        XCTAssertTrue(controller.title!.contains("\(searchType)"))
+        XCTAssertTrue(controller.title!.contains("\(api.currentSearchType!)"))
         
     }
     
