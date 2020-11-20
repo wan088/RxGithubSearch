@@ -41,6 +41,20 @@ class API: APIProtocol {
             }
         }.resume()
     }
+    func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void) {
+        let urlString = baseUrl + "search/repositories?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
+        guard let url = URL(string: urlString) else { return}
+        urlSession.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+            if error != nil {
+                completion(nil)
+            }else if let data = data {
+                let result = try? JSONDecoder().decode(SearchUsersResults.self, from: data)
+                completion(result)
+            }
+        }.resume()
+        
+    }
+    
 }
 
 extension URLSession: URLSessionProtocol {
