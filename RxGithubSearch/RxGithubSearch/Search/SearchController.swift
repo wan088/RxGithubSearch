@@ -20,6 +20,7 @@ class SearchController: UIViewController {
     var tableView: UITableView!
     var repos = [Repogitory]()
     var currentSearchType: SearchType = .repo
+    var api: APIProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +77,7 @@ extension SearchController: UITableViewDelegate, UITableViewDataSource {
 }
 extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        API(urlSession: URLSession.shared).getRepogitoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
+        self.api.getRepogitoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
             DispatchQueue.main.async {
                 self.repos = result?.items ?? []
                 self.tableView.reloadData()

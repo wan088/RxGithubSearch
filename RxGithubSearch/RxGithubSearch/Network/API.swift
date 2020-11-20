@@ -19,7 +19,7 @@ enum Order {
     case asc
 }
 
-class API {
+class API: APIProtocol {
     
     private let baseUrl = "https://api.github.com/"
     private let urlSession: URLSessionProtocol
@@ -33,7 +33,7 @@ class API {
         let urlString = baseUrl + "search/repositories?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
         guard let url = URL(string: urlString) else { return}
         urlSession.dataTask(with: URLRequest(url: url)) { (data, response, error) in
-            if let error = error {
+            if error != nil {
                 completion(nil)
             }else if let data = data {
                 let result = try? JSONDecoder().decode(SearchRepogitoriesResults.self, from: data)
@@ -45,6 +45,10 @@ class API {
 
 extension URLSession: URLSessionProtocol {
     
+}
+
+protocol APIProtocol {
+    func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?)->Void)
 }
 
 protocol URLSessionProtocol {
