@@ -8,13 +8,5 @@ target 'RxGithubSearch' do
   # Pods for RxGithubSearch
 pod "RxSwift"
 pod "RxCocoa"
-  target 'RxGithubSearchTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'RxGithubSearchUITests' do
-    # Pods for testing
-  end
-
+ 
 end
