@@ -42,7 +42,7 @@ class API: APIProtocol {
         }.resume()
     }
     func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void) {
-        let urlString = baseUrl + "search/repositories?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
+        let urlString = baseUrl + "search/users?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
         guard let url = URL(string: urlString) else { return}
         urlSession.dataTask(with: URLRequest(url: url)) { (data, response, error) in
             if error != nil {
