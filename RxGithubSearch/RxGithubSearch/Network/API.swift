@@ -28,38 +28,34 @@ class API: APIProtocol {
         self.urlSession = urlSession
     }
 
-    func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?)->Void) {
+    func getRepogitoriesResults (keyword: String, sort: RepoSorter = .updated, order: Order = .desc, completion: @escaping (SearchRepogitoriesResults?)->Void) {
         guard let urlRequest = buildRequest(path: "/repositories", parameters: [
             "q" : keyword,
-            "sort" : sort!.rawValue,
-            "order" : order!
+            "sort" : sort.rawValue,
+            "order" : order
         ]) else {return}
         
-        urlSession.dataTask(with: urlRequest) { (data, response, error) in
-            if error != nil {
-                completion(nil)
-            }else if let data = data {
-                let result = try? JSONDecoder().decode(SearchRepogitoriesResults.self, from: data)
-                completion(result)
-            }
-        }.resume()
+        getResults(request: urlRequest, completion: completion)
     }
-    func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void) {
+    func getUsersResults (keyword: String, sort: RepoSorter = .updated, order: Order = .asc, completion: @escaping (SearchUsersResults?)->Void) {
         guard let urlRequest = buildRequest(path: "/users", parameters: [
             "q" : keyword,
-            "sort" : sort!.rawValue,
-            "order" : order!
+            "sort" : sort.rawValue,
+            "order" : order
         ]) else {return}
         
-        urlSession.dataTask(with: urlRequest) { (data, response, error) in
+        getResults(request: urlRequest, completion: completion)
+    }
+    
+    func getResults <T> (request: URLRequest, completion: @escaping (T?)->Void) where T: Decodable {
+        urlSession.dataTask(with: request) { (data, response, error) in
             if error != nil {
                 completion(nil)
             }else if let data = data {
-                let result = try? JSONDecoder().decode(SearchUsersResults.self, from: data)
+                let result = try? JSONDecoder().decode(T.self, from: data)
                 completion(result)
             }
         }.resume()
-        
     }
     
     private func buildRequest(path: String, parameters: [String : Any] = [:]) -> URLRequest? {
@@ -81,8 +77,8 @@ extension URLSession: URLSessionProtocol {
 }
 
 protocol APIProtocol {
-    func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?)->Void)
-    func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void)
+    func getRepogitoriesResults (keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchRepogitoriesResults?)->Void)
+    func getUsersResults (keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchUsersResults?)->Void)
 }
 
 protocol URLSessionProtocol {

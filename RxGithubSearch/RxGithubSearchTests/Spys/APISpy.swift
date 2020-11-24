@@ -15,7 +15,7 @@ class APISpy: APIProtocol {
     var stubbedError: ErrorDummy!
     var currentSearchType: SearchType!
     
-    func getRepogitoriesResults(keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?) -> Void) {
+    func getRepogitoriesResults(keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchRepogitoriesResults?) -> Void) {
         self.currentSearchType = SearchType.repo
         if stubbedError != nil {
             completion(nil)
@@ -24,7 +24,7 @@ class APISpy: APIProtocol {
         }
     }
     
-    func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void) {
+    func getUsersResults (keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchUsersResults?)->Void) {
         self.currentSearchType = SearchType.user
         if stubbedError != nil {
             completion(nil)
