@@ -21,7 +21,7 @@ enum Order {
 
 class API: APIProtocol {
     
-    private let baseUrl = "https://api.github.com/"
+    private let baseUrl = "https://api.github.com/search"
     private let urlSession: URLSessionProtocol
     
     init(urlSession: URLSessionProtocol) {
@@ -29,10 +29,13 @@ class API: APIProtocol {
     }
 
     func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?)->Void) {
+        guard let urlRequest = buildRequest(path: "/repositories", parameters: [
+            "q" : keyword,
+            "sort" : sort!.rawValue,
+            "order" : order!
+        ]) else {return}
         
-        let urlString = baseUrl + "search/repositories?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
-        guard let url = URL(string: urlString) else { return}
-        urlSession.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+        urlSession.dataTask(with: urlRequest) { (data, response, error) in
             if error != nil {
                 completion(nil)
             }else if let data = data {
@@ -42,9 +45,13 @@ class API: APIProtocol {
         }.resume()
     }
     func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void) {
-        let urlString = baseUrl + "search/users?q=\(keyword)&sort=\(sort!.rawValue)&order=\(order!)"
-        guard let url = URL(string: urlString) else { return}
-        urlSession.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+        guard let urlRequest = buildRequest(path: "/users", parameters: [
+            "q" : keyword,
+            "sort" : sort!.rawValue,
+            "order" : order!
+        ]) else {return}
+        
+        urlSession.dataTask(with: urlRequest) { (data, response, error) in
             if error != nil {
                 completion(nil)
             }else if let data = data {
@@ -55,10 +62,18 @@ class API: APIProtocol {
         
     }
     
-    func getSearchResults() {
+    private func buildRequest(path: String, parameters: [String : Any] = [:]) -> URLRequest? {
+        var components = URLComponents(string: baseUrl + path)
+        components?.queryItems = parameters.map{
+            URLQueryItem(name: $0.key, value: "\($0.value)")
+        }
+        guard let url = components?.url else {return nil}
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = ["Content-Type" : "application/json"]
         
+        return request
     }
-    
 }
 
 extension URLSession: URLSessionProtocol {
@@ -68,7 +83,6 @@ extension URLSession: URLSessionProtocol {
 protocol APIProtocol {
     func getRepogitoriesResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchRepogitoriesResults?)->Void)
     func getUsersResults (keyword: String, sort: RepoSorter?, order: Order?, completion: @escaping (SearchUsersResults?)->Void)
-    
 }
 
 protocol URLSessionProtocol {

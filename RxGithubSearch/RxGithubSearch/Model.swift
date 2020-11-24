@@ -15,6 +15,14 @@ enum SearchType: Int {
         Self(rawValue: self.rawValue + 1) ?? Self(rawValue: 0)!
     }
     
+    var paramName: String {
+        switch self {
+        case .repo :
+            return "repos"
+        case .user :
+            return "users"
+        }
+    }
 }
 
 struct SearchRepogitoriesResults: Decodable {
