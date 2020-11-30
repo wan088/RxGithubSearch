@@ -8,10 +8,11 @@
 import Foundation
 import XCTest
 import RxSwift
-
 @testable import RxGithubSearch
 
 final class APITests: XCTestCase {
+    
+    let disposeBag = DisposeBag()
     override func setUp() {
         super.setUp()
     }
@@ -51,13 +52,15 @@ final class APITests: XCTestCase {
         var myResult: SearchRepogitoriesResults?
         //when - getSerachRepogitories API 호출
         
-        api.getRepogitoriesResults(keyword: "wan", sort: .stars, order: .asc) { result in
-            myResult = result
-        }
+        api.rxGetRepositoriesResults(keyword: "wan")
+            .subscribe { (results) in
+                myResult = results
+            }.disposed(by: self.disposeBag)
         
         //then
         XCTAssertNotNil(myResult)
         XCTAssertEqual(myResult!.total_count, 3)
+        XCTAssertEqual(myResult!.items.first!.id, 26262860)
     }
     
     func testSearchRepogitories_whenNetworkFail_getNil () {
@@ -91,13 +94,15 @@ final class APITests: XCTestCase {
         """
         urlSessionSpy.stubbedError = ErrorDummy()
         let api = API(urlSession: urlSessionSpy)
-        var myResult: SearchRepogitoriesResults! = SearchRepogitoriesResults(total_count: 3, incomplete_results: true, items: [])
+        var myResult: SearchRepogitoriesResults? 
         
         //when - getSerachRepogitories API 호출
         
-        api.getRepogitoriesResults(keyword: "wan", sort: .stars, order: .asc) { (result) in
-            myResult = result
-        }
+        api.rxGetRepositoriesResults(keyword: "wan")
+            .subscribe { (results) in
+                myResult = results
+            }.disposed(by: self.disposeBag)
+        
         
         //then
         XCTAssertNil(myResult)
@@ -108,12 +113,13 @@ final class APITests: XCTestCase {
         let urlSessionSpy = URLSessionSpy()
         urlSessionSpy.stubbedResultsString = "asdasd"
         let api = API(urlSession: urlSessionSpy)
-        var myResult: SearchRepogitoriesResults! = SearchRepogitoriesResults(total_count: 3, incomplete_results: true, items: [])
+        var myResult: SearchRepogitoriesResults?
         
         //when - getSerachRepogitories API 호출
-        api.getRepogitoriesResults(keyword: "asda", sort: .stars, order: .asc) { (result) in
-            myResult = result
-        }
+        api.rxGetRepositoriesResults(keyword: "wan")
+            .subscribe { (results) in
+                myResult = results
+            }.disposed(by: self.disposeBag)
         
         //then
         XCTAssertNil(myResult)

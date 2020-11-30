@@ -39,6 +39,16 @@ class API: APIProtocol {
         
         getResults(request: urlRequest, completion: completion)
     }
+    
+    func rxGetRepositoriesResults (keyword: String, sort: RepoSorter = .updated, order: Order = .desc) -> Single<SearchRepogitoriesResults>{
+        guard let urlRequest = buildRequest(path: "/repositories", parameters: [
+            "q" : keyword,
+            "sort" : sort.rawValue,
+            "order" : order
+        ]) else { return Single.error(APIError.normal) }
+        return rxGetResults(request: urlRequest)
+    }
+    
     func getUsersResults (keyword: String, sort: RepoSorter = .updated, order: Order = .asc, completion: @escaping (SearchUsersResults?)->Void) {
         guard let urlRequest = buildRequest(path: "/users", parameters: [
             "q" : keyword,
@@ -62,11 +72,11 @@ class API: APIProtocol {
     
     func rxGetResults <T> (request: URLRequest) -> Single<T>  where T: Decodable {
         return Single.create { observer -> Disposable in
-            let dataTask = self.urlSession.dataTask(with: request) { (data, _, error) in
-                if let data = data as? T {
-                    observer(.success(data))
-                }else if let error = error {
+            let dataTask = self.urlSession.dataTask(with: request) { (data, response, error) in
+                if let error = error {
                     observer(.error(error))
+                }else if let data = data, let result = try? JSONDecoder().decode(T.self, from: data) {
+                    observer(.success(result))
                 }else {
                     observer(.error(APIError.normal))
                 }
