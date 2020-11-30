@@ -52,7 +52,7 @@ final class APITests: XCTestCase {
         var myResult: SearchRepogitoriesResults?
         //when - getSerachRepogitories API 호출
         
-        api.rxGetRepositoriesResults(keyword: "wan")
+        api.getRepositoriesResults(keyword: "wan")
             .subscribe { (results) in
                 myResult = results
             }.disposed(by: self.disposeBag)
@@ -99,7 +99,7 @@ final class APITests: XCTestCase {
         
         //when - getSerachRepogitories API 호출
         
-        api.rxGetRepositoriesResults(keyword: "wan")
+        api.getRepositoriesResults(keyword: "wan")
             .subscribe { (results) in
                 myResult = results
             }.disposed(by: self.disposeBag)
@@ -117,7 +117,7 @@ final class APITests: XCTestCase {
         var myResult: SearchRepogitoriesResults?
         
         //when - getSerachRepogitories API 호출
-        api.rxGetRepositoriesResults(keyword: "wan")
+        api.getRepositoriesResults(keyword: "wan")
             .subscribe { (results) in
                 myResult = results
             }.disposed(by: self.disposeBag)
@@ -159,7 +159,7 @@ final class APITests: XCTestCase {
         var myResult: SearchUsersResults?
         
         //when - getSerachRepogitories API 호출
-        api.rxGetUsersResults(keyword: "wan")
+        api.getUsersResults(keyword: "wan")
             .subscribe(onSuccess: { result in
             myResult = result
             }).disposed(by: self.disposeBag)

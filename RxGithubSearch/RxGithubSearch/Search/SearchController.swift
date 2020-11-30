@@ -90,14 +90,14 @@ extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         switch self.currentSearchType {
         case .repo:
-            self.api.rxGetRepositoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
+            self.api.getRepositoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
                 .subscribe(onSuccess: { (result) in
                     self.repos = result.items
                     self.tableView.reloadData()
                 })
                 .disposed(by: self.disposeBag)
         case .user:
-            self.api.rxGetUsersResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
+            self.api.getUsersResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
                 .subscribe(onSuccess: { (result) in
                     self.users = result.items
                     self.tableView.reloadData()

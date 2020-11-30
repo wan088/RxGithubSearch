@@ -29,57 +29,26 @@ class API: APIProtocol {
     init(urlSession: URLSessionProtocol) {
         self.urlSession = urlSession
     }
-
-    func getRepogitoriesResults (keyword: String, sort: RepoSorter = .updated, order: Order = .desc, completion: @escaping (SearchRepogitoriesResults?)->Void) {
-        guard let urlRequest = buildRequest(path: "/repositories", parameters: [
-            "q" : keyword,
-            "sort" : sort.rawValue,
-            "order" : order
-        ]) else {return}
-        
-        getResults(request: urlRequest, completion: completion)
-    }
     
-    func rxGetRepositoriesResults (keyword: String, sort: RepoSorter = .updated, order: Order = .desc) -> Single<SearchRepogitoriesResults>{
+    func getRepositoriesResults (keyword: String, sort: RepoSorter = .updated, order: Order = .desc) -> Single<SearchRepogitoriesResults>{
         guard let urlRequest = buildRequest(path: "/repositories", parameters: [
             "q" : keyword,
             "sort" : sort.rawValue,
             "order" : order
         ]) else { return Single.error(APIError.normal) }
-        return rxGetResults(request: urlRequest)
+        return get(request: urlRequest)
     }
-    
-    func getUsersResults (keyword: String, sort: RepoSorter = .updated, order: Order = .asc, completion: @escaping (SearchUsersResults?)->Void) {
-        guard let urlRequest = buildRequest(path: "/users", parameters: [
-            "q" : keyword,
-            "sort" : sort.rawValue,
-            "order" : order
-        ]) else {return}
-        
-        getResults(request: urlRequest, completion: completion)
-    }
-    func rxGetUsersResults (keyword: String, sort: RepoSorter = .updated, order: Order = .asc) -> Single<SearchUsersResults>{
+    func getUsersResults (keyword: String, sort: RepoSorter = .updated, order: Order = .asc) -> Single<SearchUsersResults>{
         guard let urlRequest = buildRequest(path: "/users", parameters: [
             "q" : keyword,
             "sort" : sort.rawValue,
             "order" : order
         ]) else { return Single.error(APIError.normal)}
         
-        return rxGetResults(request: urlRequest)
+        return get(request: urlRequest)
     }
     
-    func getResults <T> (request: URLRequest, completion: @escaping (T?)->Void) where T: Decodable {
-        urlSession.dataTask(with: request) { (data, response, error) in
-            if error != nil {
-                completion(nil)
-            }else if let data = data {
-                let result = try? JSONDecoder().decode(T.self, from: data)
-                completion(result)
-            }
-        }.resume()
-    }
-    
-    func rxGetResults <T> (request: URLRequest) -> Single<T>  where T: Decodable {
+    func get <T> (request: URLRequest) -> Single<T>  where T: Decodable {
         return Single.create { observer -> Disposable in
             let dataTask = self.urlSession.dataTask(with: request) { (data, response, error) in
                 if let error = error {
@@ -114,10 +83,8 @@ extension URLSession: URLSessionProtocol {
 }
 
 protocol APIProtocol {
-    func getRepogitoriesResults (keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchRepogitoriesResults?)->Void)
-    func getUsersResults (keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchUsersResults?)->Void)
-    func rxGetRepositoriesResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepogitoriesResults>
-    func rxGetUsersResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchUsersResults>
+    func getRepositoriesResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepogitoriesResults>
+    func getUsersResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchUsersResults>
 }
 
 protocol URLSessionProtocol {
