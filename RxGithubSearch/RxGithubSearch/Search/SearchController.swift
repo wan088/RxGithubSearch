@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import RxSwift
 
 class SearchController: UIViewController {
+    let disposeBag = DisposeBag()
+    
     var tableView: UITableView!
     var repos = [Repogitory]()
     var users = [User]()
@@ -16,12 +19,18 @@ class SearchController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         configureNavigationBar()
         configureSearchBar()
         configureTableView()
         configureUI()
         addSubViews()
     }
+    
+    func bind() {
+        
+    }
+    
     func configureNavigationBar() {
         self.navigationItem.hidesSearchBarWhenScrolling = false
         let toggleSearchTypeBtn = UIBarButtonItem(barButtonSystemItem: .organize, target:  self, action: #selector(toggleSearchType(_:)))
@@ -81,19 +90,23 @@ extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         switch self.currentSearchType {
         case .repo:
-            self.api.getRepogitoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
-                DispatchQueue.main.async {
-                    self.repos = result?.items ?? []
-                    self.tableView.reloadData()
-                }
-            }
+            self.api.rxGetRepositoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
+                .subscribe(onSuccess: { (result) in
+                    DispatchQueue.main.async {
+                        self.repos = result.items
+                        self.tableView.reloadData()
+                    }
+                })
+                .disposed(by: self.disposeBag)
         case .user:
-            self.api.getUsersResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc) { (result) in
-                DispatchQueue.main.async {
-                    self.users = result?.items ?? []
-                    self.tableView.reloadData()
-                }
-            }
+            self.api.rxGetUsersResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
+                .subscribe(onSuccess: { (result) in
+                    DispatchQueue.main.async {
+                        self.users = result.items
+                        self.tableView.reloadData()
+                    }
+                })
+                .disposed(by: self.disposeBag)
         }
     }
 }
