@@ -6,6 +6,7 @@ target 'RxGithubSearch' do
   use_frameworks!
   pod "RxSwift"
   pod "RxCocoa"
+  pod 'ReactorKit'
   # Pods for RxGithubSearch
   
   target 'RxGithubSearchTests' do
