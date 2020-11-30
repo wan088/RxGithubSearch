@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import RxSwift
 
 @testable import RxGithubSearch
 
 class APISpy: APIProtocol {
+    
     var stubbedSearchRepogitoriesResults: SearchRepogitoriesResults!
     var stubbedSearchUsersResults: SearchUsersResults!
     var stubbedError: ErrorDummy!
@@ -33,5 +35,26 @@ class APISpy: APIProtocol {
         }
     }
     
+    func rxGetRepositoriesResults(keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepogitoriesResults> {
+        self.currentSearchType = SearchType.repo
+        if let error = stubbedError {
+            return Single.error(error)
+        }else if let results = stubbedSearchRepogitoriesResults {
+            return Single.just(results)
+        } else {
+            return Single.error(ErrorDummy())
+        }
+    }
+    
+    func rxGetUsersResults(keyword: String, sort: RepoSorter, order: Order) -> Single<SearchUsersResults> {
+        self.currentSearchType = SearchType.user
+        if let error = stubbedError {
+            return Single.error(error)
+        }else if let results = stubbedSearchUsersResults {
+            return Single.just(results)
+        } else {
+            return Single.error(ErrorDummy())
+        }
+    }
     
 }

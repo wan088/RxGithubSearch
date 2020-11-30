@@ -116,6 +116,8 @@ extension URLSession: URLSessionProtocol {
 protocol APIProtocol {
     func getRepogitoriesResults (keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchRepogitoriesResults?)->Void)
     func getUsersResults (keyword: String, sort: RepoSorter, order: Order, completion: @escaping (SearchUsersResults?)->Void)
+    func rxGetRepositoriesResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepogitoriesResults>
+    func rxGetUsersResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchUsersResults>
 }
 
 protocol URLSessionProtocol {
