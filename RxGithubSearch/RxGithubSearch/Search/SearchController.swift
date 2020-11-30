@@ -92,19 +92,15 @@ extension SearchController: UISearchResultsUpdating {
         case .repo:
             self.api.rxGetRepositoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
                 .subscribe(onSuccess: { (result) in
-                    DispatchQueue.main.async {
-                        self.repos = result.items
-                        self.tableView.reloadData()
-                    }
+                    self.repos = result.items
+                    self.tableView.reloadData()
                 })
                 .disposed(by: self.disposeBag)
         case .user:
             self.api.rxGetUsersResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
                 .subscribe(onSuccess: { (result) in
-                    DispatchQueue.main.async {
-                        self.users = result.items
-                        self.tableView.reloadData()
-                    }
+                    self.users = result.items
+                    self.tableView.reloadData()
                 })
                 .disposed(by: self.disposeBag)
         }

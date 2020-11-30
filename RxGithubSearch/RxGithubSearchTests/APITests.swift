@@ -57,6 +57,7 @@ final class APITests: XCTestCase {
                 myResult = results
             }.disposed(by: self.disposeBag)
         
+        XCTWaiter().wait(for: [XCTestExpectation()], timeout: 0.1)
         //then
         XCTAssertNotNil(myResult)
         XCTAssertEqual(myResult!.total_count, 3)
@@ -162,7 +163,7 @@ final class APITests: XCTestCase {
             .subscribe(onSuccess: { result in
             myResult = result
             }).disposed(by: self.disposeBag)
-        
+        XCTWaiter().wait(for: [XCTestExpectation()], timeout: 0.1)
         //then
         XCTAssertNotNil(myResult)
         XCTAssertEqual(myResult!.total_count, 12)

@@ -92,7 +92,7 @@ class API: APIProtocol {
             }
             dataTask.resume()
             return Disposables.create { dataTask.cancel() }
-        }
+        }.observeOn(MainScheduler.asyncInstance)
     }
     
     private func buildRequest(path: String, parameters: [String : Any] = [:]) -> URLRequest? {
