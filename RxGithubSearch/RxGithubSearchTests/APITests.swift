@@ -158,9 +158,10 @@ final class APITests: XCTestCase {
         var myResult: SearchUsersResults?
         
         //when - getSerachRepogitories API 호출
-        api.getUsersResults(keyword: "wan", sort: .stars, order: .asc) { result in
+        api.rxGetUsersResults(keyword: "wan")
+            .subscribe(onSuccess: { result in
             myResult = result
-        }
+            }).disposed(by: self.disposeBag)
         
         //then
         XCTAssertNotNil(myResult)

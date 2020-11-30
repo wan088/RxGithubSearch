@@ -58,6 +58,15 @@ class API: APIProtocol {
         
         getResults(request: urlRequest, completion: completion)
     }
+    func rxGetUsersResults (keyword: String, sort: RepoSorter = .updated, order: Order = .asc) -> Single<SearchUsersResults>{
+        guard let urlRequest = buildRequest(path: "/users", parameters: [
+            "q" : keyword,
+            "sort" : sort.rawValue,
+            "order" : order
+        ]) else { return Single.error(APIError.normal)}
+        
+        return rxGetResults(request: urlRequest)
+    }
     
     func getResults <T> (request: URLRequest, completion: @escaping (T?)->Void) where T: Decodable {
         urlSession.dataTask(with: request) { (data, response, error) in
