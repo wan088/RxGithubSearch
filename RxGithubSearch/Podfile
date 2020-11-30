@@ -4,9 +4,13 @@
 target 'RxGithubSearch' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-
+  pod "RxSwift"
+  pod "RxCocoa"
   # Pods for RxGithubSearch
-pod "RxSwift"
-pod "RxCocoa"
+  
+  target 'RxGithubSearchTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
  
 end
