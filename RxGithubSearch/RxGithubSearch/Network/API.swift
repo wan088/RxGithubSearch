@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import RxSwift
 
 enum RepoSorter: String {
     case stars
@@ -18,7 +18,9 @@ enum Order {
     case desc
     case asc
 }
-
+enum APIError: Error {
+    case normal
+}
 class API: APIProtocol {
     
     private let baseUrl = "https://api.github.com/search"
@@ -56,6 +58,22 @@ class API: APIProtocol {
                 completion(result)
             }
         }.resume()
+    }
+    
+    func rxGetResults <T> (request: URLRequest) -> Single<T>  where T: Decodable {
+        return Single.create { observer -> Disposable in
+            let dataTask = self.urlSession.dataTask(with: request) { (data, _, error) in
+                if let data = data as? T {
+                    observer(.success(data))
+                }else if let error = error {
+                    observer(.error(error))
+                }else {
+                    observer(.error(APIError.normal))
+                }
+            }
+            dataTask.resume()
+            return Disposables.create { dataTask.cancel() }
+        }
     }
     
     private func buildRequest(path: String, parameters: [String : Any] = [:]) -> URLRequest? {
