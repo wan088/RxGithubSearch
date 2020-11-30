@@ -26,6 +26,9 @@ class URLSessionSpy: URLSessionProtocol {
 class URLSessionDataTaskDummy: URLSessionDataTask {
     override func resume() {
     }
+    override func cancel() {
+        
+    }
 }
 
 class ErrorDummy: Error {}
