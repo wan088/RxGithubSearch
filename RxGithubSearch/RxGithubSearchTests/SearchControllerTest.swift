@@ -6,6 +6,8 @@
 //
 
 import XCTest
+import RxSwift
+import RxCocoa
 
 @testable import RxGithubSearch
 
@@ -25,10 +27,11 @@ class SearchControllerTest: XCTestCase {
             ]
         )
         controller.api = api
-        controller.view.layoutIfNeeded()
+        controller.loadViewIfNeeded()
         
         // when
         controller.navigationItem.searchController?.searchBar.text = "wan"
+        controller.updateSearchResults(for: controller.navigationItem.searchController!)
         
         // then
         XCTWaiter().wait(for: [XCTestExpectation()], timeout: 1)
