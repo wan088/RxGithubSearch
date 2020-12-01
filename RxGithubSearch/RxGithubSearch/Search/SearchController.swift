@@ -21,6 +21,7 @@ class SearchController: UIViewController {
     let currentSearchType = BehaviorRelay<SearchType>(value: .repo)
     let repos = BehaviorRelay<[Repogitory]>(value: [])
     let users = BehaviorRelay<[User]>(value: [])
+    let searchBarText = PublishRelay<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,14 +60,14 @@ class SearchController: UIViewController {
             }
             .disposed(by: self.disposeBag)
         
-//        let sub = PublishSubject
-        self.navigationItem.searchController?.searchBar
-            .rx.text
-            .orEmpty
+        // TODO : searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
+        self.searchBarText
             .filter{!$0.isEmpty}
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
+            .debug()
             .flatMap({(text) -> Single<[Repogitory]> in
+                print("?")
                 return self.api.getRepositoriesResults(keyword: text, sort: .stars, order: .asc)
                     .map{$0.items}
             })
@@ -103,6 +104,11 @@ class SearchController: UIViewController {
         self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
     }
     
+}
+extension SearchController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        self.searchBarText.accept(searchController.searchBar.text ?? "")
+    }
 }
 //extension SearchController: UITableViewDelegate, UITableViewDataSource {
 //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
