@@ -49,23 +49,23 @@ class SearchControllerTest: XCTestCase {
     
     func testSearchResult_whenToggled() {
         // given
-        let controller = SearchController()
-        let api = APISpy()
         let searchType = controller.currentSearchType
-        api.currentSearchType = searchType
-        controller.api = api
-        controller.view.layoutIfNeeded()
+        api.currentSearchType = searchType.value
+        api.stubbedSearchRepositoriesResults = SearchRepositoriesResults(total_count: 5, incomplete_results: true, items: [Repository(id: 32, node_id: "asd", name: "kyw", full_name: "yongwan")])
+        api.stubbedSearchUsersResults = SearchUsersResults(total_count: 3, incomplete_results: true, items: [User(login: "lee", id: 123, node_id: "leewan")])
         
+        self.controller.view.layoutIfNeeded()
         
         //when + then
-        controller.navigationItem.searchController?.searchBar.text = "asd"
-        XCTAssertTrue(controller.title!.contains("\(api.currentSearchType!)"))
+        self.controller.navigationItem.searchController?.searchBar.text = "asd"
+        XCTWaiter().wait(for: [XCTestExpectation()], timeout: 0.4)
+        XCTAssertTrue(controller.tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.textLabel?.text?.contains("kyw") == true)
         
-        controller.toggleSearchType(3)
+        self.controller.currentSearchType.accept(.user)
         
-        controller.navigationItem.searchController?.searchBar.text = "asd"
-        XCTAssertTrue(controller.title!.contains("\(api.currentSearchType!)"))
-        
+        self.controller.navigationItem.searchController?.searchBar.text = "my"
+        XCTWaiter().wait(for: [XCTestExpectation()], timeout: 0.4)
+        XCTAssertTrue(controller.tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.textLabel?.text?.contains("lee") == true)
     }
     
     
