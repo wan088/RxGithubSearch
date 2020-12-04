@@ -13,25 +13,33 @@ import RxCocoa
 
 class SearchControllerTest: XCTestCase {
     
+    var controller: SearchController!
+    var api: APISpy!
+    
+    override func setUp() {
+        super.setUp()
+        self.controller = SearchController()
+        self.api = APISpy()
+        self.controller.api = self.api
+        
+        
+    }
     func testSearchResult_whenSuccess() {
         // given
-        let controller = SearchController()
-        let api = APISpy()
-        api.stubbedSearchRepogitoriesResults = SearchRepogitoriesResults(
+        self.api.stubbedSearchRepositoriesResults = SearchRepositoriesResults(
             total_count: 3,
             incomplete_results: true,
             items: [
-                Repogitory(id: 1, node_id: "id1", name: "dfg", full_name: "dfg"),
-                Repogitory(id: 2, node_id: "id2", name: "dfggd", full_name: "dfg"),
-                Repogitory(id: 3, node_id: "id3", name: "dfgfs", full_name: "dfg"),
+                Repository(id: 1, node_id: "id1", name: "dfg", full_name: "dfg"),
+                Repository(id: 2, node_id: "id2", name: "dfggd", full_name: "dfg"),
+                Repository(id: 3, node_id: "id3", name: "dfgfs", full_name: "dfg"),
             ]
         )
-        controller.api = api
-        controller.loadViewIfNeeded()
+        self.controller.loadViewIfNeeded()
         
         // when
-        controller.navigationItem.searchController?.searchBar.text = "wan"
-        controller.updateSearchResults(for: controller.navigationItem.searchController!)
+        self.controller.navigationItem.searchController?.searchBar.text = "wan"
+        self.controller.updateSearchResults(for: controller.navigationItem.searchController!)
         
         // then
         XCTWaiter().wait(for: [XCTestExpectation()], timeout: 1)
@@ -68,10 +76,10 @@ class SearchControllerTest: XCTestCase {
         let searchType = controller.currentSearchType
         
         // when + then
-        controller.toggleSearchType(3)
-        XCTAssertEqual(controller.title, "\(searchType.next) _ Search")
-        controller.toggleSearchType(3)
-        XCTAssertEqual(controller.title, "\(searchType.next.next) _ Search")
+        controller.currentSearchType.accept(.user)
+        XCTAssertEqual(controller.title, "\(searchType.value.next) _ Search")
+        controller.currentSearchType.accept(.repo)
+        XCTAssertEqual(controller.title, "\(searchType.value.next.next) _ Search")
     }
     
     
