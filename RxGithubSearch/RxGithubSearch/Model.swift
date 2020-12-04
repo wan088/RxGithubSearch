@@ -25,12 +25,12 @@ enum SearchType: Int {
     }
 }
 
-struct SearchRepogitoriesResults: Decodable {
+struct SearchRepositoriesResults: Decodable {
     let total_count: Int
     let incomplete_results: Bool
-    let items: [Repogitory]
+    let items: [Repository]
 }
-struct Repogitory: Decodable, Equatable {  
+struct Repository: Decodable, Equatable {  
     let id: Int
     let node_id: String
     let name: String

@@ -12,16 +12,16 @@ import RxSwift
 
 class APISpy: APIProtocol {
     
-    var stubbedSearchRepogitoriesResults: SearchRepogitoriesResults!
+    var stubbedSearchRepositoriesResults: SearchRepositoriesResults!
     var stubbedSearchUsersResults: SearchUsersResults!
     var stubbedError: ErrorDummy!
     var currentSearchType: SearchType!
     
-    func getRepositoriesResults(keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepogitoriesResults> {
+    func getRepositoriesResults(keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepositoriesResults> {
         self.currentSearchType = SearchType.repo
         if let error = stubbedError {
             return Single.error(error)
-        }else if let results = stubbedSearchRepogitoriesResults {
+        }else if let results = stubbedSearchRepositoriesResults {
             return Single.just(results)
         } else {
             return Single.error(ErrorDummy())

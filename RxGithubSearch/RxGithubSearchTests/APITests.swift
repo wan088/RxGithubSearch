@@ -17,7 +17,7 @@ final class APITests: XCTestCase {
         super.setUp()
     }
     
-    func testSearchRepogitories_whenSuccess_get () {
+    func testSearchRepositories_whenSuccess_get () {
         //given
         
         let urlSessionSpy = URLSessionSpy()
@@ -49,8 +49,8 @@ final class APITests: XCTestCase {
         """
         
         let api = API(urlSession: urlSessionSpy)
-        var myResult: SearchRepogitoriesResults?
-        //when - getSerachRepogitories API 호출
+        var myResult: SearchRepositoriesResults?
+        //when - getSerachRepositories API 호출
         
         api.getRepositoriesResults(keyword: "wan")
             .subscribe { (results) in
@@ -64,7 +64,7 @@ final class APITests: XCTestCase {
         XCTAssertEqual(myResult!.items.first!.id, 26262860)
     }
     
-    func testSearchRepogitories_whenNetworkFail_getNil () {
+    func testSearchRepositories_whenNetworkFail_getNil () {
         //given
         let urlSessionSpy = URLSessionSpy()
         urlSessionSpy.stubbedResultsString = """
@@ -95,9 +95,9 @@ final class APITests: XCTestCase {
         """
         urlSessionSpy.stubbedError = ErrorDummy()
         let api = API(urlSession: urlSessionSpy)
-        var myResult: SearchRepogitoriesResults? 
+        var myResult: SearchRepositoriesResults? 
         
-        //when - getSerachRepogitories API 호출
+        //when - getSerachRepositories API 호출
         
         api.getRepositoriesResults(keyword: "wan")
             .subscribe { (results) in
@@ -109,14 +109,14 @@ final class APITests: XCTestCase {
         XCTAssertNil(myResult)
     }
     
-    func testSearchRepogitories_whenWrongDataFail_getNil () {
+    func testSearchRepositories_whenWrongDataFail_getNil () {
         //given
         let urlSessionSpy = URLSessionSpy()
         urlSessionSpy.stubbedResultsString = "asdasd"
         let api = API(urlSession: urlSessionSpy)
-        var myResult: SearchRepogitoriesResults?
+        var myResult: SearchRepositoriesResults?
         
-        //when - getSerachRepogitories API 호출
+        //when - getSerachRepositories API 호출
         api.getRepositoriesResults(keyword: "wan")
             .subscribe { (results) in
                 myResult = results
@@ -158,7 +158,7 @@ final class APITests: XCTestCase {
         let api = API(urlSession: urlSessionSpy)
         var myResult: SearchUsersResults?
         
-        //when - getSerachRepogitories API 호출
+        //when - getSerachRepositories API 호출
         api.getUsersResults(keyword: "wan")
             .subscribe(onSuccess: { result in
             myResult = result

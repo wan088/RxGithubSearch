@@ -30,7 +30,7 @@ class API: APIProtocol {
         self.urlSession = urlSession
     }
     
-    func getRepositoriesResults (keyword: String, sort: RepoSorter = .updated, order: Order = .desc) -> Single<SearchRepogitoriesResults>{
+    func getRepositoriesResults (keyword: String, sort: RepoSorter = .updated, order: Order = .desc) -> Single<SearchRepositoriesResults>{
         guard let urlRequest = buildRequest(path: "/repositories", parameters: [
             "q" : keyword,
             "sort" : sort.rawValue,
@@ -83,7 +83,7 @@ extension URLSession: URLSessionProtocol {
 }
 
 protocol APIProtocol {
-    func getRepositoriesResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepogitoriesResults>
+    func getRepositoriesResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchRepositoriesResults>
     func getUsersResults (keyword: String, sort: RepoSorter, order: Order) -> Single<SearchUsersResults>
 }
 

@@ -13,13 +13,10 @@ class SearchController: UIViewController {
     let disposeBag = DisposeBag()
     
     var tableView: UITableView!
-//    var repos = [Repogitory]()
-//    var users = [User]()
-//    var currentSearchType: SearchType = .repo
     var api: APIProtocol!
     
     let currentSearchType = BehaviorRelay<SearchType>(value: .repo)
-    let repos = BehaviorRelay<[Repogitory]>(value: [])
+    let repos = BehaviorRelay<[Repository]>(value: [])
     let users = BehaviorRelay<[User]>(value: [])
     let searchBarText = PublishRelay<String>()
     
@@ -52,28 +49,36 @@ class SearchController: UIViewController {
         currentSearchTypeObservable
             .bind{ _ in self.tableView.reloadData() }
             .disposed(by: self.disposeBag)
-        
-        
-        repos
-            .bind(to: self.tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)){(row, element, cell) in
-                cell.textLabel?.text = element.name
-            }
-            .disposed(by: self.disposeBag)
-        
+
         // TODO : searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
-        self.searchBarText
+        let searchBarChanged = self.searchBarText
             .filter{!$0.isEmpty}
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .debug()
-            .flatMap({(text) -> Single<[Repogitory]> in
-                print("?")
+            .share()
+        
+        searchBarChanged
+            .filter{_ in return self.currentSearchType.value == .repo }
+            .flatMap({(text) -> Single<[Repository]> in
                 return self.api.getRepositoriesResults(keyword: text, sort: .stars, order: .asc)
                     .map{$0.items}
             })
+            .debug()
             .bind(to: self.repos)
             .disposed(by:self.disposeBag)
 
+        searchBarChanged
+            .filter{_ in return self.currentSearchType.value == .user }
+            .flatMap({(text) -> Single<[User]> in
+                return self.api.getUsersResults(keyword: text, sort: .stars, order: .asc)
+                    .map{$0.items}
+            })
+            .bind(to: self.users)
+            .disposed(by:self.disposeBag)
+        
+        Observable<Any>.merge(self.repos.map{_ in ""}, self.users.map{_ in ""})
+            .bind{[weak self]_ in self?.tableView.reloadData()}
+            .disposed(by: self.disposeBag)
     }
     
     func configureNavigationBar() {
@@ -81,15 +86,15 @@ class SearchController: UIViewController {
         let toggleSearchTypeBtn = UIBarButtonItem(systemItem: .organize)
         self.navigationItem.rightBarButtonItem = toggleSearchTypeBtn
     }
+    
     func configureSearchBar() {
         let searchController = UISearchController()
-//        searchController.searchResultsUpdater = self
         self.navigationItem.searchController = searchController
+        self.navigationItem.searchController?.searchResultsUpdater = self
     }
     func configureTableView() {
         self.tableView = UITableView()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-//        self.tableView.dataSource = self
     }
     func configureUI() {
         self.view.backgroundColor = .white
@@ -102,6 +107,7 @@ class SearchController: UIViewController {
         self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.tableView.dataSource = self
     }
     
 }
@@ -110,44 +116,26 @@ extension SearchController: UISearchResultsUpdating {
         self.searchBarText.accept(searchController.searchBar.text ?? "")
     }
 }
-//extension SearchController: UITableViewDelegate, UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch self.currentSearchType {
-//        case .repo :
-//            return repos.count
-//        case .user :
-//            return users.count
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-//        switch self.currentSearchType {
-//        case .repo:
-//            cell.textLabel?.text = self.repos[indexPath.row].name
-//        case .user:
-//            cell.textLabel?.text = self.users[indexPath.row].login
-//        }
-//        return cell
-//    }
-////}
-//extension SearchController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        switch self.currentSearchType {
-//        case .repo:
-//            self.api.getRepositoriesResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
-//                .subscribe(onSuccess: { (result) in
-//                    self.repos = result.items
-//                    self.tableView.reloadData()
-//                })
-//                .disposed(by: self.disposeBag)
-//        case .user:
-//            self.api.getUsersResults(keyword: searchController.searchBar.text ?? "", sort: .stars, order: .asc)
-//                .subscribe(onSuccess: { (result) in
-//                    self.users = result.items
-//                    self.tableView.reloadData()
-//                })
-//                .disposed(by: self.disposeBag)
-//        }
-//    }
-//}
+extension SearchController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch self.currentSearchType.value {
+        case .repo :
+            return self.repos.value.count
+        case .user :
+            return self.users.value.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        switch self.currentSearchType.value {
+        case .repo :
+            cell.textLabel?.text = repos.value[indexPath.row].name
+        case .user :
+            cell.textLabel?.text = users.value[indexPath.row].login
+        }
+        
+        return cell
+    }
+    
+}
