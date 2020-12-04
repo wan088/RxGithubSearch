@@ -68,19 +68,19 @@ class SearchControllerTest: XCTestCase {
         XCTAssertTrue(controller.tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.textLabel?.text?.contains("lee") == true)
     }
     
-    
-    func testSearchToggleBtn_whenTapped() {
-        // given
-        let controller = SearchController()
-        controller.loadViewIfNeeded()
-        let searchType = controller.currentSearchType
-        
-        // when + then
-        controller.currentSearchType.accept(.user)
-        XCTAssertEqual(controller.title, "\(searchType.value.next) _ Search")
-        controller.currentSearchType.accept(.repo)
-        XCTAssertEqual(controller.title, "\(searchType.value.next.next) _ Search")
-    }
+    // TODO : 해당 테스트를 위한 차후 추가작업 필요
+//    func testSearchToggleBtn_whenTapped() {
+//        // given
+//        let controller = SearchController()
+//        controller.loadViewIfNeeded()
+//        let searchType = controller.currentSearchType
+//
+//        // when + then
+//        controller.currentSearchType.accept(.user)
+//        XCTAssertEqual(controller.title, "\(searchType.value.next) _ Search")
+//        controller.currentSearchType.accept(.repo)
+//        XCTAssertEqual(controller.title, "\(searchType.value.next.next) _ Search")
+//    }
     
     
 }

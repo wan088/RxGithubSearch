@@ -50,7 +50,8 @@ class SearchController: UIViewController {
             .bind{ _ in self.tableView.reloadData() }
             .disposed(by: self.disposeBag)
 
-        // TODO : searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
+        // TODO: distinctUntilChanged() 때문에 같은 키워드인데 서치타입이 다른 경우도 무시될 수 있다.
+        // TODO: searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
         let searchBarChanged = self.searchBarText
             .filter{!$0.isEmpty}
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
