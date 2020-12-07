@@ -18,6 +18,7 @@
 		12A60EC8257545C600233AA8 /* SearchReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A60EC7257545C600233AA8 /* SearchReactor.swift */; };
 		12BECF42255EAE0F00CE7B3A /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BECF41255EAE0F00CE7B3A /* API.swift */; };
 		12E45DBF257E727B000EB8A5 /* UserDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E45DBE257E727B000EB8A5 /* UserDetailController.swift */; };
+		12E45DC5257E9F81000EB8A5 /* UserDetailReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E45DC4257E9F81000EB8A5 /* UserDetailReactor.swift */; };
 		12E6B8ED2566F6E30017BF6F /* SearchControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6B8EC2566F6E30017BF6F /* SearchControllerTest.swift */; };
 		12E6B8F72567B10C0017BF6F /* APISpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6B8F62567B10C0017BF6F /* APISpy.swift */; };
 		D8ADCB5E38D417EB06356898 /* Pods_RxGithubSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEA10AAA230436715A99AE28 /* Pods_RxGithubSearch.framework */; };
@@ -50,6 +51,7 @@
 		12A60EC7257545C600233AA8 /* SearchReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReactor.swift; sourceTree = "<group>"; };
 		12BECF41255EAE0F00CE7B3A /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		12E45DBE257E727B000EB8A5 /* UserDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailController.swift; sourceTree = "<group>"; };
+		12E45DC4257E9F81000EB8A5 /* UserDetailReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailReactor.swift; sourceTree = "<group>"; };
 		12E6B8EC2566F6E30017BF6F /* SearchControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchControllerTest.swift; sourceTree = "<group>"; };
 		12E6B8F62567B10C0017BF6F /* APISpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISpy.swift; sourceTree = "<group>"; };
 		6442E10037E82F5E36174D92 /* Pods_RxGithubSearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxGithubSearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +133,7 @@
 				120A541A255BF486007C113F /* SearchController.swift */,
 				12A60EC7257545C600233AA8 /* SearchReactor.swift */,
 				12E45DBE257E727B000EB8A5 /* UserDetailController.swift */,
+				12E45DC4257E9F81000EB8A5 /* UserDetailReactor.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				12E45DBF257E727B000EB8A5 /* UserDetailController.swift in Sources */,
 				120A53CD255BE93A007C113F /* AppDelegate.swift in Sources */,
 				120A541B255BF486007C113F /* SearchController.swift in Sources */,
+				12E45DC5257E9F81000EB8A5 /* UserDetailReactor.swift in Sources */,
 				120A53CF255BE93A007C113F /* SceneDelegate.swift in Sources */,
 				12A60EC8257545C600233AA8 /* SearchReactor.swift in Sources */,
 				12BECF42255EAE0F00CE7B3A /* API.swift in Sources */,

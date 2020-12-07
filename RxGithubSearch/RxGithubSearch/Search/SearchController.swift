@@ -8,9 +8,10 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-class SearchController: UIViewController {
-    let disposeBag = DisposeBag()
+class SearchController: UIViewController, View {
+    var disposeBag = DisposeBag()
     
     var tableView: UITableView!
     var api: APIProtocol!
@@ -27,17 +28,21 @@ class SearchController: UIViewController {
         configureTableView()
         configureUI()
         addSubViews()
-        bind()
+        self.reactor = SearchReactor(api: api)
     }
     
-    func bind() {
+    func bind(reactor: SearchReactor) {
         
         self.navigationItem.rightBarButtonItem?
             .rx.tap
-            .withLatestFrom(currentSearchType)
-            .map{$0.next}
-            .bind(to: self.currentSearchType)
+            .map{SearchReactor.Action.toggleSearchType}
+            .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
+            
+//            .withLatestFrom(currentSearchType)
+//            .map{$0.next}
+//            .bind(to: self.currentSearchType)
+//            .disposed(by: self.disposeBag)
         
         let currentSearchTypeObservable = self.currentSearchType.share()
         
