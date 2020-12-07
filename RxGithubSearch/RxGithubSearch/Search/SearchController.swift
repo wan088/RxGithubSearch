@@ -39,45 +39,62 @@ class SearchController: UIViewController, View {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
+        self.searchBarText
+            .filter{!$0.isEmpty}
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .map{SearchReactor.Action.search($0)}
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
         reactor.state
             .map(\.searchType)
             .map{"\($0) _ Search"}
             .bind(to: self.rx.title)
             .disposed(by: self.disposeBag)
         
-        let currentSearchTypeObservable = self.currentSearchType.share()
-    
-        
-        currentSearchTypeObservable
-            .bind{ _ in self.tableView.reloadData() }
+        reactor.state
+            .map(\.searchType)
+            .bind{ _ in self.tableView.reloadData();}
             .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map(\.repo)
+            .bind(to: self.repos)
+            .disposed(by: self.disposeBag)
+        
+        reactor.state
+            .map(\.user)
+            .bind(to: self.users)
+            .disposed(by: self.disposeBag)
+        
 
         // TODO: distinctUntilChanged() 때문에 같은 키워드인데 서치타입이 다른 경우도 무시될 수 있다.
         // TODO: searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
-        let searchBarChanged = self.searchBarText
-            .filter{!$0.isEmpty}
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .share()
+//        let searchBarChanged = self.searchBarText
+//            .filter{!$0.isEmpty}
+//            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+//            .distinctUntilChanged()
+//            .share()
         
-        searchBarChanged
-            .filter{_ in return self.currentSearchType.value == .repo }
-            .flatMap({(text) -> Single<[Repository]> in
-                return self.api.getRepositoriesResults(keyword: text, sort: .stars, order: .asc)
-                    .map{$0.items}
-            })
-            .bind(to: self.repos)
-            .disposed(by:self.disposeBag)
-
-        searchBarChanged
-            .filter{_ in return self.currentSearchType.value == .user }
-            .flatMap({(text) -> Single<[User]> in
-                return self.api.getUsersResults(keyword: text, sort: .stars, order: .asc)
-                    .map{$0.items}
-            })
-            .bind(to: self.users)
-            .disposed(by:self.disposeBag)
-        
+//        searchBarChanged
+//            .filter{_ in return self.currentSearchType.value == .repo }
+//            .flatMap({(text) -> Single<[Repository]> in
+//                return self.api.getRepositoriesResults(keyword: text, sort: .stars, order: .asc)
+//                    .map{$0.items}
+//            })
+//            .bind(to: self.repos)
+//            .disposed(by:self.disposeBag)
+//
+//        searchBarChanged
+//            .filter{_ in return self.currentSearchType.value == .user }
+//            .flatMap({(text) -> Single<[User]> in
+//                return self.api.getUsersResults(keyword: text, sort: .stars, order: .asc)
+//                    .map{$0.items}
+//            })
+//            .bind(to: self.users)
+//            .disposed(by:self.disposeBag)
+//
         Observable<Any>.merge(self.repos.map{_ in ""}, self.users.map{_ in ""})
             .bind{[weak self]_ in self?.tableView.reloadData()}
             .disposed(by: self.disposeBag)
