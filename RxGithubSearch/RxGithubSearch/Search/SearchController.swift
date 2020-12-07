@@ -64,7 +64,6 @@ class SearchController: UIViewController {
                 return self.api.getRepositoriesResults(keyword: text, sort: .stars, order: .asc)
                     .map{$0.items}
             })
-            .debug()
             .bind(to: self.repos)
             .disposed(by:self.disposeBag)
 
@@ -79,6 +78,14 @@ class SearchController: UIViewController {
         
         Observable<Any>.merge(self.repos.map{_ in ""}, self.users.map{_ in ""})
             .bind{[weak self]_ in self?.tableView.reloadData()}
+            .disposed(by: self.disposeBag)
+        
+        tableView.rx.itemSelected
+            .bind{ [weak self] indexPath in
+                let detail = UserDetailController()
+                detail.index = indexPath.row
+                self?.navigationController?.pushViewController(detail, animated: true)
+            }
             .disposed(by: self.disposeBag)
     }
     
