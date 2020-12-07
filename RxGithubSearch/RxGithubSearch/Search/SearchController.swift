@@ -38,18 +38,15 @@ class SearchController: UIViewController, View {
             .map{SearchReactor.Action.toggleSearchType}
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
-            
-//            .withLatestFrom(currentSearchType)
-//            .map{$0.next}
-//            .bind(to: self.currentSearchType)
-//            .disposed(by: self.disposeBag)
         
-        let currentSearchTypeObservable = self.currentSearchType.share()
-        
-        currentSearchTypeObservable
+        reactor.state
+            .map(\.searchType)
             .map{"\($0) _ Search"}
             .bind(to: self.rx.title)
             .disposed(by: self.disposeBag)
+        
+        let currentSearchTypeObservable = self.currentSearchType.share()
+    
         
         currentSearchTypeObservable
             .bind{ _ in self.tableView.reloadData() }

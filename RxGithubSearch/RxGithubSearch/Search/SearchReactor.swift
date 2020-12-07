@@ -24,11 +24,6 @@ class SearchReactor: Reactor {
         var searchType: SearchType = .repo
     }
     
-//            .withLatestFrom(currentSearchType)
-//            .map{$0.next}
-//            .bind(to: self.currentSearchType)
-//            .disposed(by: self.disposeBag)
-    
     init(api: APIProtocol) {
         self.api = api
         self.initialState = State()
