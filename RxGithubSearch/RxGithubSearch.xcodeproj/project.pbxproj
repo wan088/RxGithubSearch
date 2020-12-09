@@ -105,13 +105,9 @@
 		120A53CB255BE93A007C113F /* RxGithubSearch */ = {
 			isa = PBXGroup;
 			children = (
-				12BECF40255EAE0600CE7B3A /* Network */,
-				120A542E255BF8F8007C113F /* Delegate */,
-				120A542D255BF8EF007C113F /* Search */,
-				120A5428255BF81C007C113F /* Model.swift */,
-				120A53D5255BE93B007C113F /* Assets.xcassets */,
-				120A53D7255BE93B007C113F /* LaunchScreen.storyboard */,
-				120A53DA255BE93B007C113F /* Info.plist */,
+				12A68C9D258145B000C7FB6D /* Support */,
+				12A68C9C2581459800C7FB6D /* Resources */,
+				12A68C9B2581457B00C7FB6D /* Sources */,
 			);
 			path = RxGithubSearch;
 			sourceTree = "<group>";
@@ -127,7 +123,7 @@
 			path = RxGithubSearchTests;
 			sourceTree = "<group>";
 		};
-		120A542D255BF8EF007C113F /* Search */ = {
+		120A542D255BF8EF007C113F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				120A541A255BF486007C113F /* SearchController.swift */,
@@ -135,16 +131,7 @@
 				12E45DBE257E727B000EB8A5 /* UserDetailController.swift */,
 				12E45DC4257E9F81000EB8A5 /* UserDetailReactor.swift */,
 			);
-			path = Search;
-			sourceTree = "<group>";
-		};
-		120A542E255BF8F8007C113F /* Delegate */ = {
-			isa = PBXGroup;
-			children = (
-				120A53CC255BE93A007C113F /* AppDelegate.swift */,
-				120A53CE255BE93A007C113F /* SceneDelegate.swift */,
-			);
-			path = Delegate;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		127CFBFF2565279F0083201D /* Spys */ = {
@@ -156,12 +143,49 @@
 			path = Spys;
 			sourceTree = "<group>";
 		};
-		12BECF40255EAE0600CE7B3A /* Network */ = {
+		12A68C9B2581457B00C7FB6D /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				12A68C9E258145C800C7FB6D /* Models */,
+				120A542D255BF8EF007C113F /* ViewControllers */,
+				12BECF40255EAE0600CE7B3A /* Utils */,
+				120A53CC255BE93A007C113F /* AppDelegate.swift */,
+				120A53CE255BE93A007C113F /* SceneDelegate.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		12A68C9C2581459800C7FB6D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				120A53D5255BE93B007C113F /* Assets.xcassets */,
+				120A53D7255BE93B007C113F /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		12A68C9D258145B000C7FB6D /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				120A53DA255BE93B007C113F /* Info.plist */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		12A68C9E258145C800C7FB6D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				120A5428255BF81C007C113F /* Model.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		12BECF40255EAE0600CE7B3A /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				12BECF41255EAE0F00CE7B3A /* API.swift */,
 			);
-			path = Network;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		27E1445B6A2BB456FBBC5863 /* Frameworks */ = {
