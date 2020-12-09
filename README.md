@@ -1,15 +1,14 @@
-# RxGithubSearch
+# 🕵🏼‍♂️ RxGithubSearch
+간단한 앱을 만들면서 이것저것 시도해봅니다 🙃
 
-// TODO: # UserStory
-
-# 사용해볼것
+## 사용해볼것
 
 - TDD
 - DI
 - ReactorKit
 - Quick
 
-# 작업순서
+## 작업순서
 
 ✅ 1. DI를 활용해서 API, UI등에 대한 Test 코드 작성
 
