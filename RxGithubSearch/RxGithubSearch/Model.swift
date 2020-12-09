@@ -30,7 +30,7 @@ struct SearchRepositoriesResults: Decodable {
     let incomplete_results: Bool
     let items: [Repository]
 }
-struct Repository: Decodable, Equatable {  
+struct Repository: Decodable, Equatable, SearchResultItem {
     let id: Int
     let node_id: String
     let name: String
@@ -45,8 +45,12 @@ struct SearchUsersResults: Decodable {
     let items: [User]
 }
 
-struct User: Decodable {
+struct User: Decodable, SearchResultItem {
     let login: String
     let id: Int
     let node_id: String
+    
+}
+
+protocol SearchResultItem {
 }
