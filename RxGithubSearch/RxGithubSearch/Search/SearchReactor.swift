@@ -19,13 +19,14 @@ class SearchReactor: Reactor {
     
     enum Mutation {
         case changeCurrentSearchType(SearchType)
-        case updateDatas([Repository]?, [User]?)
+        case updateItems([Repository]?, [User]?)
     }
     
     struct State {
         var searchType: SearchType = .repo
-        var repo: [Repository] = []
-        var user: [User] = []
+//        var repo: [Repository] = []
+//        var user: [User] = []
+        var items: [SearchResultItem] = []
     }
     
     init(api: APIProtocol) {
@@ -42,11 +43,11 @@ class SearchReactor: Reactor {
             case .repo :
                 return api.getRepositoriesResults(keyword: keyword, sort: .stars, order: .asc)
                     .asObservable()
-                    .map{Mutation.updateDatas($0.items, nil)}
+                    .map{Mutation.updateItems($0.items, nil)}
             case .user :
                 return api.getUsersResults(keyword: keyword, sort: .stars, order: .asc)
                     .asObservable()
-                    .map{Mutation.updateDatas(nil, $0.items)}
+                    .map{Mutation.updateItems(nil, $0.items)}
             }
         }
     }
@@ -55,9 +56,9 @@ class SearchReactor: Reactor {
         switch mutation {
         case let .changeCurrentSearchType(type) :
             newState.searchType = type
-        case let .updateDatas(repo, user) :
-            if let repo = repo { newState.repo = repo }
-            if let user = user { newState.user = user }
+        case let .updateItems(repo, user) :
+            if let repo = repo { newState.items = repo }
+            else if let user = user { newState.items = user }
         }
         return newState
     }

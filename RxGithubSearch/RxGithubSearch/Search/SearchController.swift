@@ -27,8 +27,8 @@ class SearchController: UIViewController, View {
         configureSearchBar()
         configureTableView()
         configureUI()
-        addSubViews()
         self.reactor = SearchReactor(api: api)
+        addSubViews()
     }
     
     func bind(reactor: SearchReactor) {
@@ -59,42 +59,24 @@ class SearchController: UIViewController, View {
             .disposed(by: self.disposeBag)
         
         reactor.state
-            .map(\.repo)
-            .bind(to: self.repos)
+            .map(\.items)
+            .bind(to: self.tableView.rx.items){(tableView, row, item) -> UITableViewCell in
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: IndexPath(row: row, section: 0))
+                if let item = item as? Repository {
+                    cell.textLabel?.text = item.name
+                }else if let item = item as? User {
+                    cell.textLabel?.text = item.login
+                }
+                return cell
+            }
             .disposed(by: self.disposeBag)
-        
-        reactor.state
-            .map(\.user)
-            .bind(to: self.users)
-            .disposed(by: self.disposeBag)
+
+
         
 
         // TODO: distinctUntilChanged() 때문에 같은 키워드인데 서치타입이 다른 경우도 무시될 수 있다.
         // TODO: searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
-//        let searchBarChanged = self.searchBarText
-//            .filter{!$0.isEmpty}
-//            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-//            .distinctUntilChanged()
-//            .share()
-        
-//        searchBarChanged
-//            .filter{_ in return self.currentSearchType.value == .repo }
-//            .flatMap({(text) -> Single<[Repository]> in
-//                return self.api.getRepositoriesResults(keyword: text, sort: .stars, order: .asc)
-//                    .map{$0.items}
-//            })
-//            .bind(to: self.repos)
-//            .disposed(by:self.disposeBag)
-//
-//        searchBarChanged
-//            .filter{_ in return self.currentSearchType.value == .user }
-//            .flatMap({(text) -> Single<[User]> in
-//                return self.api.getUsersResults(keyword: text, sort: .stars, order: .asc)
-//                    .map{$0.items}
-//            })
-//            .bind(to: self.users)
-//            .disposed(by:self.disposeBag)
-//
+
         Observable<Any>.merge(self.repos.map{_ in ""}, self.users.map{_ in ""})
             .bind{[weak self]_ in self?.tableView.reloadData()}
             .disposed(by: self.disposeBag)
@@ -134,7 +116,6 @@ class SearchController: UIViewController, View {
         self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.tableView.dataSource = self
     }
     
 }
@@ -142,27 +123,4 @@ extension SearchController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         self.searchBarText.accept(searchController.searchBar.text ?? "")
     }
-}
-extension SearchController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch self.currentSearchType.value {
-        case .repo :
-            return self.repos.value.count
-        case .user :
-            return self.users.value.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        switch self.currentSearchType.value {
-        case .repo :
-            cell.textLabel?.text = repos.value[indexPath.row].name
-        case .user :
-            cell.textLabel?.text = users.value[indexPath.row].login
-        }
-        
-        return cell
-    }
-    
 }
