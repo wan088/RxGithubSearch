@@ -13,7 +13,12 @@ import ReactorKit
 class SearchController: UIViewController, View {
     var disposeBag = DisposeBag()
     
-    var tableView: UITableView!
+    lazy var tableView: UITableView = {
+        let tv = UITableView()
+        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return tv
+    }()
+    
     var api: APIProtocol!
     
     let searchBarText = PublishRelay<String>()
@@ -45,11 +50,11 @@ class SearchController: UIViewController, View {
             .map{"\($0) _ Search"}
             .bind(to: self.rx.title)
             .disposed(by: self.disposeBag)
-        
-        reactor.state
-            .map(\.searchType)
-            .bind{ _ in self.tableView.reloadData();}
-            .disposed(by: self.disposeBag)
+//
+//        reactor.state
+//            .map(\.searchType)
+//            .bind{ _ in self.tableView.reloadData();}
+//            .disposed(by: self.disposeBag)
         
         reactor.state
             .map(\.items)
@@ -86,9 +91,6 @@ class SearchController: UIViewController, View {
         let searchController = UISearchController()
         self.navigationItem.searchController = searchController
         self.navigationItem.searchController?.searchResultsUpdater = self
-        
-        self.tableView = UITableView()
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     func addSubViews() {
         self.view.addSubview(self.tableView)
