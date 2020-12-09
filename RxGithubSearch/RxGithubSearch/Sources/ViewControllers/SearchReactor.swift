@@ -25,6 +25,7 @@ class SearchReactor: Reactor {
     struct State {
         var searchType: SearchType = .repo
         var items: [SearchResultItem] = []
+        var isLoading: Bool = false
     }
     
     init(api: APIProtocol) {

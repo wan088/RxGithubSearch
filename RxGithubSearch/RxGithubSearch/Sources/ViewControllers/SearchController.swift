@@ -38,13 +38,6 @@ class SearchController: UIViewController, View {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
-//        self.searchBarText
-//            .filter{!$0.isEmpty}
-//            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-//            .map{SearchReactor.Action.search($0)}
-//            .bind(to: reactor.action)
-//            .disposed(by: self.disposeBag)
-        
         self.navigationItem.searchController?.searchBar
             .rx.text
             .filter{$0 != nil && !$0!.isEmpty}
@@ -74,7 +67,6 @@ class SearchController: UIViewController, View {
             .disposed(by: self.disposeBag)
 
         // TODO: distinctUntilChanged() 때문에 같은 키워드인데 서치타입이 다른 경우도 무시될 수 있다.
-        // TODO: searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
         
         tableView.rx.itemSelected
             .bind{ [weak self] indexPath in
@@ -94,7 +86,6 @@ class SearchController: UIViewController, View {
         
         let searchController = UISearchController()
         self.navigationItem.searchController = searchController
-//        self.navigationItem.searchController?.searchResultsUpdater = self
     }
     func addSubViews() {
         self.view.addSubview(self.tableView)
@@ -106,14 +97,3 @@ class SearchController: UIViewController, View {
     }
     
 }
-//extension SearchController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        searchController.searchBar
-//            .rx.text
-//            .filter{$0?.isEmpty == false}
-//            .bind(to: <#T##String?...##String?#>)
-//
-//
-//        self.searchBarText.accept(searchController.searchBar.text ?? "")
-//    }
-//}
