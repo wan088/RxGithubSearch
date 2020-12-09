@@ -16,16 +16,10 @@ class SearchController: UIViewController, View {
     var tableView: UITableView!
     var api: APIProtocol!
     
-    let currentSearchType = BehaviorRelay<SearchType>(value: .repo)
-    let repos = BehaviorRelay<[Repository]>(value: [])
-    let users = BehaviorRelay<[User]>(value: [])
     let searchBarText = PublishRelay<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
-        configureSearchBar()
-        configureTableView()
         configureUI()
         self.reactor = SearchReactor(api: api)
         addSubViews()
@@ -42,7 +36,6 @@ class SearchController: UIViewController, View {
         self.searchBarText
             .filter{!$0.isEmpty}
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
             .map{SearchReactor.Action.search($0)}
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -71,15 +64,8 @@ class SearchController: UIViewController, View {
             }
             .disposed(by: self.disposeBag)
 
-
-        
-
         // TODO: distinctUntilChanged() 때문에 같은 키워드인데 서치타입이 다른 경우도 무시될 수 있다.
         // TODO: searchBar.text 자체를 옵저빙 하면서 테스트까지 할 수 있는 방법은 없을까?
-
-        Observable<Any>.merge(self.repos.map{_ in ""}, self.users.map{_ in ""})
-            .bind{[weak self]_ in self?.tableView.reloadData()}
-            .disposed(by: self.disposeBag)
         
         tableView.rx.itemSelected
             .bind{ [weak self] indexPath in
@@ -90,24 +76,19 @@ class SearchController: UIViewController, View {
             .disposed(by: self.disposeBag)
     }
     
-    func configureNavigationBar() {
+    func configureUI() {
+        self.view.backgroundColor = .white
+        
         self.navigationItem.hidesSearchBarWhenScrolling = false
         let toggleSearchTypeBtn = UIBarButtonItem(systemItem: .organize)
         self.navigationItem.rightBarButtonItem = toggleSearchTypeBtn
-    }
-    
-    func configureSearchBar() {
+        
         let searchController = UISearchController()
         self.navigationItem.searchController = searchController
         self.navigationItem.searchController?.searchResultsUpdater = self
-    }
-    func configureTableView() {
+        
         self.tableView = UITableView()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-    }
-    func configureUI() {
-        self.view.backgroundColor = .white
-        self.title = "\(self.currentSearchType) _ Search"
     }
     func addSubViews() {
         self.view.addSubview(self.tableView)
