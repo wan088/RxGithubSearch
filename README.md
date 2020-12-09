@@ -1,4 +1,4 @@
-# 🕵🏼‍♂️ RxGithubSearch
+# RxGithubSearch
 간단한 앱을 만들면서 이것저것 시도해봅니다 🙃
 
 ## 사용해볼것
