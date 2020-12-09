@@ -24,8 +24,6 @@ class SearchReactor: Reactor {
     
     struct State {
         var searchType: SearchType = .repo
-//        var repo: [Repository] = []
-//        var user: [User] = []
         var items: [SearchResultItem] = []
     }
     

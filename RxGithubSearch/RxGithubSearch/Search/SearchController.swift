@@ -38,8 +38,17 @@ class SearchController: UIViewController, View {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
-        self.searchBarText
-            .filter{!$0.isEmpty}
+//        self.searchBarText
+//            .filter{!$0.isEmpty}
+//            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+//            .map{SearchReactor.Action.search($0)}
+//            .bind(to: reactor.action)
+//            .disposed(by: self.disposeBag)
+        
+        self.navigationItem.searchController?.searchBar
+            .rx.text
+            .filter{$0 != nil && !$0!.isEmpty}
+            .map{$0!}
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .map{SearchReactor.Action.search($0)}
             .bind(to: reactor.action)
@@ -50,11 +59,6 @@ class SearchController: UIViewController, View {
             .map{"\($0) _ Search"}
             .bind(to: self.rx.title)
             .disposed(by: self.disposeBag)
-//
-//        reactor.state
-//            .map(\.searchType)
-//            .bind{ _ in self.tableView.reloadData();}
-//            .disposed(by: self.disposeBag)
         
         reactor.state
             .map(\.items)
@@ -90,7 +94,7 @@ class SearchController: UIViewController, View {
         
         let searchController = UISearchController()
         self.navigationItem.searchController = searchController
-        self.navigationItem.searchController?.searchResultsUpdater = self
+//        self.navigationItem.searchController?.searchResultsUpdater = self
     }
     func addSubViews() {
         self.view.addSubview(self.tableView)
@@ -102,8 +106,14 @@ class SearchController: UIViewController, View {
     }
     
 }
-extension SearchController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        self.searchBarText.accept(searchController.searchBar.text ?? "")
-    }
-}
+//extension SearchController: UISearchResultsUpdating {
+//    func updateSearchResults(for searchController: UISearchController) {
+//        searchController.searchBar
+//            .rx.text
+//            .filter{$0?.isEmpty == false}
+//            .bind(to: <#T##String?...##String?#>)
+//
+//
+//        self.searchBarText.accept(searchController.searchBar.text ?? "")
+//    }
+//}
