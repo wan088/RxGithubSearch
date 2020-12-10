@@ -47,6 +47,10 @@ class SearchController: UIViewController, View {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
+//        reactor.state
+//            .map(\.isLoading)
+//            .
+        
         reactor.state
             .map(\.searchType)
             .map{"\($0) _ Search"}
@@ -66,8 +70,6 @@ class SearchController: UIViewController, View {
             }
             .disposed(by: self.disposeBag)
 
-        // TODO: distinctUntilChanged() 때문에 같은 키워드인데 서치타입이 다른 경우도 무시될 수 있다.
-        
         tableView.rx.itemSelected
             .bind{ [weak self] indexPath in
                 let detail = UserDetailController()
@@ -94,6 +96,9 @@ class SearchController: UIViewController, View {
         self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        self.tableView.addSubview(activityIndicator)
     }
     
 }
