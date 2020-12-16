@@ -6,6 +6,7 @@ target 'RxGithubSearch' do
   pod "RxSwift"
   pod "RxCocoa"
   pod 'ReactorKit'
+  pod 'Alamofire'
 
   # Pods for RxGithubSearch
   
